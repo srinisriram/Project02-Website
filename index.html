@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Project 2 Report</title>
         <style>
             :root {
@@ -143,6 +145,96 @@
                 max-width: 100%;
                 height: auto;
             }
+            /* Report layout adjustments (readability, spacing, responsive images) */
+
+            body {
+                margin: 0;
+                padding-bottom: 3rem;
+            }
+
+            main {
+                padding: 0.5rem 2rem 1.5rem;
+            }
+
+            main > section {
+                margin-block: 2.5rem;
+            }
+
+            main p {
+                max-width: 75ch;
+            }
+
+            h4 {
+                font-size: 110%;
+                margin-block: 2em 0.75em;
+                color: var(--color-neutral-30);
+            }
+
+            figure img {
+                display: block;
+                margin-inline: auto;
+            }
+
+            ol.decisions {
+                padding-inline-start: 1.5em;
+                max-width: 75ch;
+
+                > li {
+                    margin-bottom: 1.5em;
+
+                    &::marker {
+                        font-weight: 600;
+                    }
+                }
+
+                .decision-title {
+                    font-weight: 600;
+                    margin: 0 0 0.4em;
+                    color: var(--color-neutral-10);
+                }
+
+                ol {
+                    padding-inline-start: 1.5em;
+                }
+
+                li.score {
+                    font-weight: 600;
+                    font-variant-numeric: tabular-nums;
+                }
+
+                ol p {
+                    margin-block: 0 0.6em;
+                }
+
+                ul.reflection-points {
+                    padding-inline-start: 1.25em;
+                    margin-block: 0 0.6em;
+
+                    > li + li {
+                        margin-top: 0.5em;
+                    }
+
+                    strong {
+                        font-weight: 600;
+                        color: var(--color-neutral-10);
+                    }
+                }
+            }
+
+            @media (max-width: 40em) {
+                html {
+                    max-width: none;
+                    margin-inline: 0.75rem;
+                }
+
+                main {
+                    padding-inline: 1rem;
+                }
+
+                figure {
+                    margin-inline: 0;
+                }
+            }
         </style>
     </head>
 
@@ -160,46 +252,135 @@
         </header>
 
         <main>
-            <h2>Proposition: The NYPD civilian review system holds officers accountable for their actions.</h2>
+            <h2>Proposition: The NYPD Civilian Review System Holds Officers Accountable for their Actions.</h2>
 
             <section>
                 <h3>FOR the Proposition</h3>
 
                 <figure>
-                    <img src="IMAGE_FILENAME" alt="" />
-                    <figcaption>BRIEF CAPTION HERE.</figcaption>
+                    <img src="images/supporting_graph.png" alt="The More Often Officers Are Substantiated, the Harsher the CCRB&#x27;s Recommended Discipline" />
+                    <figcaption>The More Often Officers Are Substantiated, the Harsher the CCRB's Recommended Discipline</figcaption>
                 </figure>
 
-                <p>Design Decisions and Rationale:</p>
+                <h4>Supporting Visualization 2 design decisions:</h4>
 
-                <ul>
-                    <li>RATIONALE_1</li>
-                    <li>RATIONALE_2</li>
-                    <li>RATIONALE_3</li>
-                </ul>
+                <ol class="decisions">
+                    <li>
+                        <p class="decision-title">Filtering to substantiated allegations from 2015–2020</p>
+                        <ol type="a">
+                            <li class="score">Score: -1</li>
+                            <li>Only substantiated cases receive discipline recommendations, so that filter is necessary. Dropping earlier years with different recommendation patterns, though, makes the escalation look like a stable feature of the system. Each bar is still accurate and the range is stated, so this is selective framing rather than contorting the data, but we chose the window partly because it helped our point.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Binning allegations by the officer’s total substantiated allegations (1, 2, 3, 4+)</p>
+                        <ol type="a">
+                            <li class="score">Score: -1</li>
+                            <li>
+                                <p>The count covers the whole 2015–2020 window rather than an officer’s history before each incident. An officer’s first allegation can therefore land in the 4+ bin, and allegations from one complaint all add to the total. It is not -2 because every percentage is correct and each bin’s n is shown. It is not 0 because “repeat offenders” implies a timeline the data does not show, and a reader cannot detect this from the chart. That moves it from “I want to prove my point” toward “I will do anything to prove my point.”</p>
+                                <ul class="reflection-points">
+                                    <li><strong>What worked:</strong> the bins give a clean, steady climb, and capping at 4+ kept the last bin large (n = 929).</li>
+                                    <li><strong>What didn’t:</strong> the chart cannot show the order of events.</li>
+                                </ul>
+                                <p>Alternatives were counting only the allegations before each incident, which is truly chronological, or counting complaints instead of allegations. Both are more honest but split the data into smaller, noisier bins. We kept total allegations because it made the escalation easiest to see.</p>
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Measuring only the share recommended for formal charges</p>
+                        <ol type="a">
+                            <li class="score">Score: 0.5</li>
+                            <li>
+                                <p>Formal charges are the most severe recommendation, so they are a fair measure of “harsher” discipline, and the y-axis states exactly what is shown. It is only 0.5, not 2, because we picked the one category that climbs most sharply. The chart leaves out the 77–95% of each bin that received lighter recommendations, so the reader never sees that most allegations against repeat offenders still do not reach formal charges. The data is accurate, but the omission is selective, which keeps the score near neutral.</p>
+                                <ul class="reflection-points">
+                                    <li><strong>What worked:</strong> one number per bar is effortless to read.</li>
+                                    <li><strong>What didn’t:</strong> it loses the context Supporting Visualization 1 provides.</li>
+                                </ul>
+                                <p>Alternatives were a stacked bar of all three discipline categories, or the share receiving any discipline. We rejected both because they were busier and weakened the escalation story.</p>
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Bar chart with a zero baseline and a sequential blue ramp</p>
+                        <ol type="a">
+                            <li class="score">Score: 2</li>
+                            <li>
+                                <p>Bars fit because the x-axis is a count, not time. The axis starts at 0, each bar shows its n, and darker, taller bars repeat the trend (redundancy gain) without distorting it. This is acceptable persuasion by our definition, because it makes the pattern easier to see without changing it.</p>
+                                <ul class="reflection-points">
+                                    <li><strong>What worked:</strong> the checkpoint feedback said this chart was clear.</li>
+                                    <li><strong>What didn’t:</strong> the color ramp adds no new information, only emphasis.</li>
+                                </ul>
+                                <p>Alternatives were a line chart, which would imply a continuous trend between whole-number bins, and a dot plot, which was accurate but less striking. We chose bars for being both clear and honest.</p>
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Title, “4.6× higher” annotation, and footnotes</p>
+                        <ol type="a">
+                            <li class="score">Score: -0.5</li>
+                            <li>
+                                <p>23% vs. 5% is correctly 4.6×, but a ratio sounds more dramatic than an 18-point gap. The title also implies the CCRB responds to an officer’s history when the chart only shows an association. It is only -0.5 because the footnotes disclose that these are recommendations, not imposed discipline, and no number is distorted; the slant is in emphasis only.</p>
+                                <ul class="reflection-points">
+                                    <li><strong>What worked:</strong> the 4.6× figure is memorable and anchors the argument.</li>
+                                    <li><strong>What didn’t:</strong> the footnotes are small, so readers may remember the title without the caveat.</li>
+                                </ul>
+                                <p>Alternatives were annotating “+18 percentage points” and a neutral title such as “Formal Charge Recommendations by Number of Substantiated Allegations.” Both were more earnest but less persuasive, so we kept the stronger framing.</p>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
             </section>
 
             <section>
                 <h3>AGAINST the Proposition</h3>
 
                 <figure>
-                    <img src="IMAGE_FILENAME" alt="" />
-                    <figcaption>BRIEF CAPTION HERE.</figcaption>
+                    <img src="images/opposing_graph.png" alt="Officers with Substantiated Allegations Rarely Hold Lower Ranks in 2020" />
+                    <figcaption>Officers with Substantiated Allegations Rarely Hold Lower Ranks in 2020</figcaption>
                 </figure>
 
-                <p>Design Decisions and Rationale:</p>
+                <h4>Opposing visualization design decisions:</h4>
 
-                <ul>
-                    <li>RATIONALE_1</li>
-                    <li>RATIONALE_2</li>
-                    <li>RATIONALE_3</li>
-                </ul>
+                <ol class="decisions">
+                    <li>
+                        <p class="decision-title">Only using the substantiated allegations in the dataset</p>
+                        <ol type="a">
+                            <li class="score">Score: -1.5</li>
+                            <li>Initially, the choice was made simply because substantiated claims were what we wanted to focus on, so the intent was not malicious, affording a 0.5 leeway in deceptiveness. Looking at just these claims, we convince the reader that very few substantiated allegation records are associated with a lower rank in 2020 than at the time of the incident, leading the viewer to the conclusion that the review system is dysfunctional. However, if we create similar graphs for unsubstantiated and exonerated claims, a higher share of rank advancement appears, meaning that substantiated allegations have a lower likelihood of advancement. This potentially supports the supporting argument of the review system’s effectiveness. Therefore, excluding these then became an intentional deception, but since it so effectively communicates the point we’re trying to make (that the review system is ineffective) and is subtle (since outside of data scientists it’s hard to realize that comparative success is what matters, not the percentages in a vacuum), we decided to keep it.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Including each case separately instead of grouping by officer</p>
+                        <ol type="a">
+                            <li class="score">Score: 1</li>
+                            <li>We decided to track each incident separately rather than grouping incidents by officers. This raised the higher-rank share from 43.2% to 45.1%, which is a marginal difference but gives officers with multiple allegations more weight and reinforces our argument more. However, this is just a small choice in how to group the data, and so we felt it was earnest because it does not drastically change the reported numbers. The point of earnestness deducted comes from how we framed the results afterward, as our title focuses on officers being promoted even though our graph is on an allegations level. We considered grouping by unique officers, but decided to stick with the allegation-level since each allegation is a unique observation that should have its appropriate weight when conveying our message to the audience rather than being aggregated by the officer.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Choosing a bar mark</p>
+                        <ol type="a">
+                            <li class="score">Score: 1</li>
+                            <li>A bar chart was the simplest way to compare the aggregate percentages we had found. Having the bars next to each other makes it clear for viewers to tell the difference between the bars, and thus tell that there is a large share of substantiated records corresponding to officers with higher ranks in 2020, so it worked well in that sense, but it took away some of the focus on how big the 45.1% stat was in a vacuum, which was also something we wanted viewers to take away from the graph. We also explored a stacked bar, having the percentages all in one bar, but it didn’t show the size of the first bar as well since it was hard to compare the sizes of the bars when they weren’t on a shared baseline, and the officers who were demoted were practically not represented. Since the bar chart doesn’t hide anything maliciously, we feel it’s a mostly earnest decision. However, one slightly deceptive choice we made was exaggerating the visual height of the 0.1% bar to maintain its visibility. While the displayed percentage of 0.1% is accurate, the bar is not proportional to the y-axis scale, so this is a slight visual distortion and slightly deceptive visually, which is why we deducted one point.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p class="decision-title">Choosing colors (red for the promoted bar, gray for the same rank bar)</p>
+                        <ol type="a">
+                            <li class="score">Score: 2</li>
+                            <li>We wanted the viewers to focus on the large percentage of officers that had been promoted between their incident and 2020, so we colored it in red, a striking color to raise alarm and attention from viewers’ subconscious. We contrasted this with a neutral gray on the “same rank” bar since this bar wasn’t the focus of our plot, emphasizing the red when sat next to a dull, uninteresting color. Because the goal is to draw the viewer’s eye to the part of the graph we want to emphasize without hiding anything, settling on this color scheme feels earnest. We considered other color schemes, like having green for the promotion(since a promotion is positive and green is also associated with positivity and growth, as compared to red, which is more often associated with loss), but this didn’t feel like it emphasized the importance of such a large promotion percentage. Plus, the idea of our graph was that these promotions are a negative occurrence, reflective of the ineffectiveness of the review system, and thus red, a negative color, made more sense to use.</li>
+                        </ol>
+                    </li>
+                </ol>
             </section>
 
             <section>
                 <h2>Final Reflection</h2>
 
-                <p>[WRITE FINAL REFLECTION PARAGRAPHS HERE.]</p>
+                <p>Our group’s main proposition is to determine whether the NYPD civilian review system holds its officers accountable by measuring disciplinary action, such as rank demotion and the severity of recommended discipline. While creating our visualizations, we found the data relatively straightforward. To make the data usable for answering our questions, we needed to transform the data by grouping allegations according to the officer’s total substantiated allegations and producing differences in ranking between the time of the incident and 2020. Our supporting visualization displays the recommended disciplinary action for substantiated allegations, illustrating how multiple substantiated allegations against an officer are associated with a higher proportion of formal charges (the severest punishment recommendation category), a straightforward visualization that supports the argument that the system holds repeated offenders accountable. Drawing that chart was easy, but defining its bins was the hardest part: we had to decide whether to count allegations or complaints, whether to count an officer’s history before each incident or across the whole 2015–2020 window, and where to cap the last bin, and each choice changed how steep the climb from 5% to 23% looked. It was initially surprising that very few officers had a 2020 rank lower than their incident-time rank. However, the dataset’s limitations significantly shape this interpretation, as it includes only officers still on the force in June 2020 and excludes those who departed before that date. As a result, promotions are confounded with time, as officers with a longer time gap between their allegation and 2020 have more opportunities to advance their careers. Despite these limitations, the scarcity of lower-ranking officers in 2020 remains a compelling statistic for our deceptive visualization, showing how selective framing can shape interpretation of a broader claim.</p>
+
+                <p>For our supporting visualization, we chose a bar chart instead of a line chart to clearly display differences in formal charge recommendations for officers with varying levels of substantiated allegations, as the relationship is defined by the number of allegations, not by time. The double encoding of increasing bar height (mark length) and progressively darker colors (color saturation) for the number of allegations reinforces the already climbing relationship with redundancy gain. Its framing does more persuasive work than its encoding: the title presents the trend as escalation, and the annotation reports 23% vs. 5% as “4.6× higher for repeat offenders,” a ratio that sounds more dramatic than an 18-point gap, even though the binning counts allegations across the whole window rather than in chronological order. For our opposing visualization, we condensed job changes into three categories: promoted, unchanged, and demoted. To further enhance the appearance and impact of the opposing take, we chose individual allegations rather than unique officers to show a larger difference in the graph. This lets the audience easily perceive that officers with substantiated allegations have very little to no demotion in rank, using a strong red on the bar and circling key details instead of neutral grays to highlight our focus while obscuring details such as elapsed time, increasing preattentive processing. What surprised us most is that we can create two visualizations from the same dataset that support opposite conclusions by simply changing the accountability measure and its associated design choices, and that the most consequential decision in our supporting chart, a single derived field, never appears on the chart itself.</p>
+
+                <p>We define ethical analysis and visualization as following the scientific method and creating visualizations in good faith, with minimal manipulation or exclusion of crucial information. No universal, quantifiable boundaries distinguish acceptable persuasive choices from misleading ones, since each dataset and story varies. Our group defines acceptable persuasion as using graph elements, colors, shapes, and selective framing to convey the message while staying accurate to the data. We consider misleading visualizations those that convey a message the data would have to be extremely contorted to support. By that standard, our supporting visualization is persuasive rather than misleading: every bar is an accurate percentage of its labeled group, the axis starts at zero, and the footnotes state that these are CCRB recommendations rather than discipline the NYPD actually imposed, so the data never has to be contorted to support the title; its “repeat offenders” label and 4.6× ratio are true but chosen to make the system look more responsive than a neutral reading would. The creator’s intent plays a significant role in determining a visualization’s credibility. Furthermore, even if one’s intent is clear when making a visualization, the design itself should encode that intent and leave it to the audience to engage with and evaluate it critically without confusion. There is a distinction between “I want to prove my point” and “I will do anything to prove my point.”</p>
             </section>
         </main>
     <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"c822b88e119346678db149ed7b7721c9","r":1,"spa":2}' crossorigin="anonymous"></script>
